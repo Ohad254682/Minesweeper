@@ -90,7 +90,7 @@ function useHint(elHint) {
 }
 
 function decreaseLife() {
-   //document.querySelector('.life:not(.hide)').classList.add('hide');
+   document.querySelector('.life:not(.hide)').classList.add('hide');
 }
 
 function revealCellsHint(row, col) {
