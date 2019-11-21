@@ -11,18 +11,26 @@
 </head>
 
 <body onload="initGame()">
-    <div class="modal hide" onclick="initGame()"></div>
-    <div class="stopwatch">You have playing for <span>0</span></div>
+    <div class="boom"></div>
+    <div class="smiley"></div>
+    <div class="stopwatch">You have been playing for <span>0</span></div>
+    <div class="highscore">Your highest score at this level is <span></span></div>
+    <div class="lives"><span class="life"><img src="img/heart.png"></span> <span class="life"><img
+                src="img/heart.png"></span> <span class="life"><img src="img/heart.png"></span></div>
     <div class="hints"></div>
-    <table border="1">
+    <div><button class="btn btn-manual" onclick="manuallyPosition()">Manually position the mines</button></div>
+    <div class="safe-click" onclick="useSafeClick(this)"><button class="btn">Safe Clicks <span></span></button></div>
+    <div class="msg-user"></div>
+    <table>
         <tbody class="board">
         </tbody>
     </table>
-    <button class="difficulty" onclick="setDifficulty(this)">Beginner</button>
-    <button class="difficulty" onclick="setDifficulty(this)">Medium</button>
-    <button class="difficulty" onclick="setDifficulty(this)">Expert</button>
+    <div class="settings">
+        <button class="btn difficulty" onclick="setDifficulty(this)">Beginner</button>
+        <button class="btn difficulty" onclick="setDifficulty(this)">Medium</button>
+        <button class="btn difficulty" onclick="setDifficulty(this)">Expert</button>
+    </div>
 </body>
-<script src="js/util.js"></script>
 <script src="js/game.js"></script>
 
 </html>
