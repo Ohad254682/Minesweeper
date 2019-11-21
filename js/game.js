@@ -5,7 +5,7 @@ var gBoard;
 
 var gLevel = { SIZE: 4, MINES: 2 };
 
-var gGame = { isOn: false, isHint: false, isCreateMode: false, gLives: 3, gFinds: 3, isSafeClick: false, shownCount: 0, markedCount: 0, secsPassed: 0 };
+var gGame = { isOn: false, isHint: false, isCreateMode: false, gLives: 3, gFinds: 3, isSafeClick: false, secsPassed: 0 };
 
 var gStopwatchInterval;
 //prevets the default menu from showing
@@ -16,14 +16,17 @@ document.querySelector('.board').addEventListener('contextmenu', function (e) {
 
 //initializing the game
 function initGame() {
-    gLives = 3;
-    gFinds = 3;
+    gGame.gLives = 3;
+    gGame.gFinds = 3;
+    document.querySelector('.msg-user').innerText = `Start to play`;
     document.querySelector('.safe-click span').innerText = gGame.gFinds;
     document.querySelector('.msg-user').innerHTML = ``;
     document.querySelector('.btn-manual').classList.remove('hide');
     document.querySelector('.lives').innerHTML = '<span class="life"><img src="img/heart.png"></span><span class="life"><img src="img/heart.png"></span><span class="life"><img src="img/heart.png"></span>';
     gGame.isOn = true;
     gGame.isHint = false;
+    gGame.isCreateMode = false;
+    gGame.isSafeClick = false;
     document.querySelector('.boom').classList.add('hide');
     document.querySelector('.hints').innerHTML = '';
     clearInterval(gStopwatchInterval);
@@ -52,6 +55,7 @@ function useSafeClick() {
     if (gGame.gFinds === 0) return;
     if (gGame.isHint) return;
     if (!IsThereSafeCell) return;
+    if(gGame.isCreateMode) return;
     gGame.isSafeClick = true;
     gGame.gFinds--;
     document.querySelector('.safe-click span').innerText = gGame.gFinds;
@@ -90,7 +94,7 @@ function useHint(elHint) {
 }
 
 function decreaseLife() {
-   document.querySelector('.life:not(.hide)').classList.add('hide');
+    document.querySelector('.life:not(.hide)').classList.add('hide');
 }
 
 function revealCellsHint(row, col) {
@@ -221,10 +225,10 @@ function renderBoard(board) {
 function cellMarked(elCell) {
     var i = +elCell.dataset.i;
     var j = +elCell.dataset.j;
-    if (gBoard[i][j].isMarked){
-         gBoard[i][j].isMarked = false;
+    if (gBoard[i][j].isMarked) {
+        gBoard[i][j].isMarked = false;
     }
-    else{ 
+    else {
         gBoard[i][j].isMarked = true;
     }
     if (checkGameOver()) gameWon();
@@ -238,7 +242,6 @@ function cellClicked(elCell) {
         console.log('create mode');
         if (gBoard[i][j].isMine) {
             document.querySelector('.msg-user').innerHTML = 'There is already a mine in that location';
-            
             return;
         }
         gLevel.MINES--;
@@ -274,11 +277,12 @@ function cellClicked(elCell) {
     gBoard[i][j].isShown = true;
     if (gBoard[i][j].minesAroundCount === 0) expandShown(gBoard, elCell);
     if (gBoard[i][j].isMine) {
-        gLives--;
+        console.log("mine");
+        gGame.gLives--;
         decreaseLife();
         indicateMine();
         gBoard[i][j].isShown = false;
-        if (gLives === 0) gameLost();
+        if (gGame.gLives === 0) gameLost();
     }
     if (checkGameOver()) gameWon();
     renderBoard(gBoard);
